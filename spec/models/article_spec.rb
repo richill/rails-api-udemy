@@ -2,8 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Article, type: :model do
   describe '#validations' do
-    it 'should test that the factory is valid' do
-      expect(build :article).to be_valid
+    it 'should have valid factory' do
+      # expect(build :article).to be_valid
+      article = build :article
+      expect(article).to be_valid
     end
 
     it 'should validate the presence of the title' do
@@ -26,8 +28,11 @@ RSpec.describe Article, type: :model do
 
     it 'should validate the uniqueness of the slug' do
       article = create :article
-      invalid_article = build :article, slug: article.slug
-      expect(invalid_article).not_to be_valid
+      other_article = build :article, slug: article.slug
+      expect(other_article).not_to be_valid
+
+      other_article.slug = "newslug"
+      expect(other_article).to be_valid
     end
   end
 
